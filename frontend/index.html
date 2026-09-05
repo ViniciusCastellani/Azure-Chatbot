@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Assistente de IA Azure</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <h1>Assistente de IA Azure</h1>
+      </div>
+      <p class="subtitle">Diga o que você precisa e eu escolho os serviços de IA certos para resolver.</p>
+    </header>
+
+    <main class="chat" id="chat" aria-live="polite" aria-label="Histórico da conversa">
+      <div class="message assistant">
+        <div class="bubble">
+          Olá! 👋 Eu posso <strong>transcrever áudios</strong>, <strong>analisar imagens</strong> (marcas, objetos, faces),
+          <strong>analisar sentimento</strong> de um texto, <strong>extrair entidades</strong>, <strong>traduzir</strong> textos,
+          <strong>ler documentos</strong> (notas fiscais, contratos) e <strong>transformar texto em fala</strong>.
+          <br /><br />Me conte o que você precisa, em uma frase.
+        </div>
+      </div>
+    </main>
+
+    <div id="dynamic-input-zone" class="dynamic-zone" hidden></div>
+
+    <div id="attachment-chip" class="attachment-chip" hidden>
+      <span class="attachment-chip-icon" aria-hidden="true">📎</span>
+      <span class="attachment-chip-name"></span>
+      <button type="button" id="attachment-remove" aria-label="Remover anexo">✕</button>
+    </div>
+
+    <form id="chat-form" class="composer" autocomplete="off">
+      <label for="chat-attach-input" class="sr-only">Anexar arquivo</label>
+      <button type="button" id="attach-btn" class="btn-attach" aria-label="Anexar arquivo" title="Anexar arquivo">📎</button>
+      <input id="chat-attach-input" name="chat-attach-input" type="file" hidden
+        accept="audio/*,image/*,.pdf,.docx,.pptx,.xlsx,.html,.txt,.mp3,.wav,.ogg,.m4a" />
+
+      <label for="chat-input" class="sr-only">Mensagem</label>
+      <input
+        id="chat-input"
+        name="chat-input"
+        type="text"
+        placeholder="Ex.: quero saber se as pessoas gostaram da reunião gravada"
+        aria-describedby="composer-hint"
+      />
+      <button type="submit" id="send-btn">Enviar</button>
+    </form>
+    <p id="composer-hint" class="hint">Pressione Enter ou clique em Enviar. Use o clipe 📎 para anexar um arquivo a qualquer momento.</p>
+  </div>
+
+  <template id="tpl-audio-zone">
+    <div class="upload-card">
+      <h3>🎙️ Envie o áudio</h3>
+      <p>Formatos aceitos: .mp3, .wav, .ogg, .m4a (preferencialmente .mp3 ou .wav)</p>
+      <div class="dropzone" tabindex="0" role="button" aria-label="Área para soltar ou selecionar arquivo de áudio">
+        <p class="dz-text">Arraste o arquivo aqui ou <span class="dz-link">clique para selecionar</span></p>
+        <input type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a" hidden />
+      </div>
+      <div class="file-preview" hidden></div>
+      <button type="button" class="btn-primary btn-confirm" disabled>Processar áudio</button>
+    </div>
+  </template>
+
+  <template id="tpl-image-zone">
+    <div class="upload-card">
+      <h3>🖼️ Envie a imagem</h3>
+      <p>Formatos aceitos: .png, .jpg, .jpeg, .webp</p>
+      <div class="dropzone" tabindex="0" role="button" aria-label="Área para soltar ou selecionar imagem">
+        <p class="dz-text">Arraste a imagem aqui ou <span class="dz-link">clique para selecionar</span></p>
+        <input type="file" accept="image/*" hidden />
+      </div>
+      <img class="image-preview" hidden alt="Pré-visualização da imagem enviada" />
+      <button type="button" class="btn-primary btn-confirm" disabled>Analisar imagem</button>
+    </div>
+  </template>
+
+  <template id="tpl-document-zone">
+    <div class="upload-card">
+      <h3>📄 Envie o documento</h3>
+      <p>Formatos aceitos: .pdf, .docx, .pptx, .xlsx, .png, .jpg (notas fiscais, contratos, formulários...)</p>
+      <div class="dropzone" tabindex="0" role="button" aria-label="Área para soltar ou selecionar documento">
+        <p class="dz-text">Arraste o documento aqui ou <span class="dz-link">clique para selecionar</span></p>
+        <input type="file" accept=".pdf,.docx,.pptx,.xlsx,.html,.txt,image/*" hidden />
+      </div>
+      <div class="file-preview" hidden></div>
+      <button type="button" class="btn-primary btn-confirm" disabled>Enviar documento</button>
+    </div>
+  </template>
+
+  <template id="tpl-text-zone">
+    <div class="upload-card">
+      <h3>✏️ Digite o texto</h3>
+      <textarea rows="4" placeholder="Digite ou cole o texto aqui..."></textarea>
+      <button type="button" class="btn-primary btn-confirm" disabled>Enviar texto</button>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
